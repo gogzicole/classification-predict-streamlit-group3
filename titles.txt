@@ -13,7 +13,7 @@ tco twitter
 short url blocked
 Sorry something went wrong
 attention required
-error
+ERROR: The request could not be satisfied
 405 You have been blacklisted
 not acceptable
 facebook
@@ -22,3 +22,4 @@ are you a robot
 just a moment
 whoops
 service unavailable
+WebSite Firewall - Access Denied
