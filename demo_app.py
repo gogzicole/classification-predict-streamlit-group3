@@ -96,8 +96,9 @@ def main():
             # clean the data
             df['text'] = df['text'].apply(clean_data)
 
-            # tokenize the data
+            # tokenize the data using tokenize function
             df['text'] = df['text'].apply(tokenize)
+ 
 
             tweet = [" ".join(i) for i in df.text]  
 
