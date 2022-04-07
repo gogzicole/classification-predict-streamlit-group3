@@ -22,11 +22,11 @@ from cleaner import handle_weblinks, clean_data, tokenize, transform
 import pandas as pd
 
 # Random forest model is too large to push to github, so we push a zipped version and unzip it on github 
-file = "resources/team3_rand_for.zip"
-path = 'resources/team3_rand_for.pkl'
-if not os.path.exists(path):
-    with zipfile.ZipFile(file, 'r') as rf_model:
-        rf_model.extractall('resources')
+# file = "resources/team3_rand_for.zip"
+# path = 'resources/team3_rand_for.pkl'
+# if not os.path.exists(path):
+#     with zipfile.ZipFile(file, 'r') as rf_model:
+#         rf_model.extractall('resources')
 
 # The main function where we will build the actual app
 def main():
@@ -94,17 +94,17 @@ def main():
         # Creating a text box for user input
         tweet_text = st.text_area("Enter Text")
 
-        models = ['logistic_regression', 'naive_bayes','Random_Forest', 'support vector']
+        models = ['logistic_regression', 'naive_bayes']
         selection = st.selectbox("Choose Model to make prediction with hit the classify button when done",models)
         
         if selection == 'logistic_regression':
             predictor = pickle.load(open("resources/team3_log_reg.pkl","rb"))
         elif selection == 'naive_bayes':
             predictor = pickle.load(open("resources/team3_naive_bayes.pkl","rb"))
-        elif selection == 'Random_Forest':
-            predictor = pickle.load(open("resources/team3_rand_for.pkl","rb"))
-        elif selection == 'support vector':
-            predictor = pickle.load(open("resources/team3_svc.pkl","rb"))
+        # elif selection == 'Random_Forest':
+        #     predictor = pickle.load(open("resources/team3_rand_for.pkl","rb"))
+        # elif selection == 'support vector':
+        #     predictor = pickle.load(open("resources/team3_svc.pkl","rb"))
         else:
             predictor = pickle.load(open("resources/team3_log_reg.pkl","rb"))
 
