@@ -11,12 +11,22 @@
 """
 # Streamlit dependencies
 import streamlit as st
+from PIL import Image
+# model dependencies 
 import pickle
+import zipfile
+import os
+# Data dependencies
 import contractions
 from cleaner import handle_weblinks, clean_data, tokenize, transform
-from PIL import Image
-# Data dependencies
 import pandas as pd
+
+# Random forest model is too large to push to github, so we push a zipped version and unzip it on github 
+file = "resources/team3_rand_for.zip"
+path = 'resources/team3_rand_for.pkl'
+if not os.path.exists(path):
+    with zipfile.ZipFile(file, 'r') as rf_model:
+        rf_model.extractall('resources')
 
 # The main function where we will build the actual app
 def main():
@@ -82,10 +92,23 @@ def main():
         st.image([img5,img6], width = 500,)
         st.info("To Make Predictions, Type in the Tweets Using the Box Below")
         # Creating a text box for user input
-        tweet_text = st.text_area("Enter Text","Type Here")
+        tweet_text = st.text_area("Enter Text")
+
+        models = ['logistic_regression', 'naive_bayes','Random_Forest', 'support vector']
+        selection = st.selectbox("Choose Model to make prediction with hit the classify button when done",models)
+        
+        if selection == 'logistic_regression':
+            predictor = pickle.load(open("resources/team3_log_reg.pkl","rb"))
+        elif selection == 'naive_bayes':
+            predictor = pickle.load(open("resources/team3_naive_bayes.pkl","rb"))
+        elif selection == 'Random_Forest':
+            predictor = pickle.load(open("resources/team3_rand_for.pkl","rb"))
+        elif selection == 'support vector':
+            predictor = pickle.load(open("resources/team3_svc.pkl","rb"))
+        else:
+            predictor = pickle.load(open("resources/team3_log_reg.pkl","rb"))
 
         if st.button("Classify"):
-
 
             df = pd.DataFrame({'text':[tweet_text]})
             df['text'] = df['text'].apply(lambda x: [contractions.fix(word) for word in x.split()])
@@ -96,14 +119,10 @@ def main():
             # clean the data
             df['text'] = df['text'].apply(clean_data)
 
-            # tokenize the data using tokenize function
+            # tokenize the data
             df['text'] = df['text'].apply(tokenize)
- 
 
             tweet = [" ".join(i) for i in df.text]  
-
-
-            predictor = pickle.load(open("resources/team3_log_reg.pkl","rb"))
 
 
             prediction = predictor.predict(tweet)
