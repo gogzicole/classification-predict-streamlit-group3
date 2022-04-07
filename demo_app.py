@@ -122,9 +122,6 @@ def main():
             # tokenize the data
             df['text'] = df['text'].apply(tokenize)
 
-            # lemmatize data
-            df['text'] = df['text'].apply(transform, method='lemma')
-
             tweet = [" ".join(i) for i in df.text]  
 
 
